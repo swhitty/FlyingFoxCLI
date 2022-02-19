@@ -22,6 +22,7 @@ FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(so
 2. Checkout FlyingFoxCLI
 ```
 % git checkout https://github.com/swhitty/FlyingFoxCLI
+% cd FlyingFox
 ```
 
 3. Pull latest docker swift image
