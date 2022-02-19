@@ -13,7 +13,7 @@ Example command line app that runs [FlyingFox](https://github.com/swhitty/Flying
 
 ### Docker
 
-FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(software)) containers are one of the easiest methods to test this from macOS.
+FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(software)) containers are one of the easiest methods to test linux builds from macOS.
 
 1. Install [Docker Desktop for mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
 
