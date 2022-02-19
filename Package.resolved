@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FlyingFox",
+        "repositoryURL": "https://github.com/swhitty/FlyingFox.git",
+        "state": {
+          "branch": "main",
+          "revision": "c0b9cb75bcab53c7fb8862954bfb768ef62dc3de",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
