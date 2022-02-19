@@ -18,10 +18,14 @@ FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(so
 1. Install [Docker Desktop for mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
 
 2. Checkout FlyingFoxCLI
-`% git checkout https://github.com/swhitty/FlyingFoxCLI`
+```
+% git checkout https://github.com/swhitty/FlyingFoxCLI
+```
 
 3. Pull latest docker swift image
-`% docker pull swift`
+```
+% docker pull swift
+```
 
 4. Build and run FlyingFoxCLI in a swift container, listening on port 80 within the container, but published on port 8080 outside of the container.
 ```
