@@ -35,7 +35,7 @@ FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(so
 % docker run -it \
   --publish 8080:80 \
   --rm \
-  --mount src="$(pwd)",target=/swift_source,type=bind \
+  --mount src="$(pwd)",target=/flyingfox,type=bind \
   swift \
-  /bin/sh -c "cd swift_source; swift run flyingfox --port 80"
+  /bin/sh -c "cd flyingfox; swift run flyingfox --port 80"
 ```
