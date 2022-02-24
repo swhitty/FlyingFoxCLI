@@ -35,16 +35,29 @@ import FlyingFox
 struct App {
 
     static func main() async throws {
-        let server = HTTPServer(port: parsePort() ?? 80, logger: .print())
-        await server.appendHandler(for: "*", closure: Self.helloWorld)
+        let server = HTTPServer(port: parsePort() ?? 80,
+                                logger: .print(),
+                                handler: makeHandler())
         try await server.start()
     }
 
-    @Sendable
-    static func helloWorld(_ request: HTTPRequest) async throws -> HTTPResponse {
-        return HTTPResponse(statusCode: .ok,
-                            headers: [.contentType: "text/plain"],
-                            body: "Hello World!".data(using: .utf8)!)
+    static func makeHandler() -> HTTPHandler {
+        var handlers = CompositeHTTPHandler()
+
+        handlers.appendHandler(for: "/hello") { _ in
+            HTTPResponse(statusCode: .ok,
+                         body: "Hello World!".data(using: .utf8)!)
+        }
+
+        handlers.appendHandler(for: "/bye") { _ in
+            HTTPResponse(statusCode: .ok,
+                         body: "Ciao 👋".data(using: .utf8)!)
+        }
+
+        return ClosureHTTPHandler { [handlers] in
+            try await Task.sleep(nanoseconds: (200_000_000...700_000_000).randomElement()!)
+            return try await handlers.handleRequest($0)
+        }
     }
 
     static func parsePort(from args: [String] = Swift.CommandLine.arguments) -> UInt16? {
