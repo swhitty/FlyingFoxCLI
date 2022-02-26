@@ -46,11 +46,13 @@ struct App {
 
         handlers.appendHandler(for: "/hello") { _ in
             HTTPResponse(statusCode: .ok,
-                         body: "Hello World!".data(using: .utf8)!)
+                         headers: [.contentType: "text/plain; charset=UTF-8"],
+                         body: "Hello World! 🦊".data(using: .utf8)!)
         }
 
         handlers.appendHandler(for: "/bye") { _ in
             HTTPResponse(statusCode: .ok,
+                         headers: [.contentType: "text/plain; charset=UTF-8"],
                          body: "Ciao 👋".data(using: .utf8)!)
         }
 
