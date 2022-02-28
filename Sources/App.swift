@@ -42,15 +42,15 @@ struct App {
     }
 
     static func makeHandler() -> HTTPHandler {
-        var handlers = CompositeHTTPHandler()
+        var handlers = RoutedHTTPHandler()
 
-        handlers.appendHandler(for: "/hello") { _ in
+        handlers.appendRoute("/hello") { _ in
             HTTPResponse(statusCode: .ok,
                          headers: [.contentType: "text/plain; charset=UTF-8"],
                          body: "Hello World! 🦊".data(using: .utf8)!)
         }
 
-        handlers.appendHandler(for: "/bye") { _ in
+        handlers.appendRoute("/bye") { _ in
             HTTPResponse(statusCode: .ok,
                          headers: [.contentType: "text/plain; charset=UTF-8"],
                          body: "Ciao 👋".data(using: .utf8)!)
