@@ -18,7 +18,7 @@ Supply a port number:
 % swift run flyingfox --port 8008
 ```
 
-### Docker
+### Run Locally with Docker
 
 FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(software)) containers are one of the easiest methods to test linux builds from macOS.
 
@@ -43,4 +43,53 @@ FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(so
   --mount src="$(pwd)",target=/flyingfoxcli,type=bind \
   swift \
   /bin/sh -c "cd flyingfoxcli; swift run flyingfox --port 80"
+```
+
+## Google Cloud Run
+FlyingFox can be deployed and run on Google Cloud Run.  Note: this requires a Google Cloud project `{project}` setup with billing enabled.
+
+Use homebrew to install the google cloud SDK
+
+```shell
+% brew install --cask google-cloud-sdk
+```
+
+## Cloud build
+
+Build on Google Cloud:
+
+```shell
+% gcloud builds submit --tag gcr.io/{project}/flyingfox --project={project}
+```
+
+Deploy docker image that was built and now exists within container registry:
+
+```shell
+% gcloud run deploy flyingfox --image gcr.io/{project}/flyingfox --platform managed --allow-unauthenticated --project={project}
+```
+
+## Local build
+
+Build locally using docker (faster) Requires [Docker desktop](https://www.docker.com/products/docker-desktop)
+
+```shell
+% docker build . -t gcr.io/{project}/flyingfox
+```
+
+Configure docker to use google auth (one-time-only)
+
+```shell
+% gcloud auth configure-docker
+```
+
+Push locally built image to google cloud container registry.
+
+```shell
+% docker image push gcr.io/{project}/flyingfox
+```
+
+Deploy docker image that was build and now exists within container registry
+
+```console
+% gcloud run deploy flyingfox --image gcr.io/{project}/flyingfox --platform managed --allow-unauthenticated --project={project}
 ```
