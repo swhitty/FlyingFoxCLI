@@ -15,7 +15,7 @@ Example command line app that runs [FlyingFox](https://github.com/swhitty/Flying
 
 Supply a port number:
 ```
-% swift run flyingfox -- port 8008
+% swift run flyingfox --port 8008
 ```
 
 ### Docker
