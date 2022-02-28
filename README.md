@@ -54,7 +54,7 @@ Use homebrew to install the google cloud SDK
 % brew install --cask google-cloud-sdk
 ```
 
-## Cloud build
+## Cloud Build & Deploy
 
 Build on Google Cloud:
 
@@ -68,7 +68,7 @@ Deploy docker image that was built and now exists within container registry:
 % gcloud run deploy flyingfox --image gcr.io/{project}/flyingfox --platform managed --allow-unauthenticated --project={project}
 ```
 
-## Local build
+## Local Build & Deploy
 
 Build locally using docker (faster) Requires [Docker desktop](https://www.docker.com/products/docker-desktop)
 
