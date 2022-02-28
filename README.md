@@ -88,7 +88,7 @@ Push locally built image to google cloud container registry.
 % docker image push gcr.io/{project}/flyingfox
 ```
 
-Deploy docker image that was build and now exists within container registry
+Deploy docker image that was built and now exists within container registry
 
 ```console
 % gcloud run deploy flyingfox --image gcr.io/{project}/flyingfox --platform managed --allow-unauthenticated --project={project}
