@@ -42,7 +42,7 @@ FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(so
   --rm \
   --mount src="$(pwd)",target=/flyingfoxcli,type=bind \
   swift \
-  /bin/sh -c "cd flyingfoxcli; swift run flyingfox --port 80"
+  /usr/bin/swift run --package-path /flyingfoxcli flyingfox --port 80
 ```
 
 ## Google Cloud Run
