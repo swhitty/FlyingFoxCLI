@@ -11,7 +11,7 @@ let package = Package(
   	  	.executable(name: "flyingfox", targets: ["FlyingFoxCLI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swhitty/FlyingFox.git", .upToNextMajor(from: "0.4.0"))
+        .package(url: "https://github.com/swhitty/FlyingFox.git", .branch("main"))
     ],
     targets: [
         .executableTarget(

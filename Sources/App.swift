@@ -44,6 +44,12 @@ struct App {
     static func makeHandler() -> HTTPHandler {
         var handlers = RoutedHTTPHandler()
 
+        handlers.appendRoute("/hello?name=*") { req in
+            HTTPResponse(statusCode: .ok,
+                         headers: [.contentType: "text/plain; charset=UTF-8"],
+                         body: "Hello \(req.query["name"]!)! 🦊".data(using: .utf8)!)
+        }
+
         handlers.appendRoute("/hello") { _ in
             HTTPResponse(statusCode: .ok,
                          headers: [.contentType: "text/plain; charset=UTF-8"],
