@@ -1,7 +1,7 @@
 # ================================
 # Build image
 # ================================
-FROM swift:5.5.2-focal as build
+FROM swift:5.5.3-focal as build
 
 # Set up a build area
 WORKDIR /build
