@@ -18,6 +18,11 @@ Supply a port number:
 % swift run flyingfox --port 8008
 ```
 
+Listen on a AF_UNIX socket:
+```
+% swift run flyingfox --path fox
+```
+
 ### Run Locally with Docker
 
 FlyingFox also supports Linux. [Docker](https://en.wikipedia.org/wiki/Docker_(software)) containers are one of the easiest methods to test linux builds from macOS.

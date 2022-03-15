@@ -30,15 +30,31 @@
 //
 
 import FlyingFox
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 
 @main
 struct App {
 
     static func main() async throws {
-        let server = HTTPServer(port: parsePort() ?? 80,
-                                logger: .print(),
-                                handler: makeHandler())
+        let server = makeServer()
         try await server.start()
+    }
+
+    static func makeServer() -> HTTPServer {
+        guard let path = parsePath() else {
+            return HTTPServer(port: parsePort() ?? 80,
+                              logger: .print(),
+                              handler: makeHandler())
+        }
+        var addr = sockaddr_un.makeUnix(path: path)
+        unlink(&addr.sun_path.0)
+        return HTTPServer(address: addr,
+                          logger: .print(),
+                          handler: makeHandler())
     }
 
     static func makeHandler() -> HTTPHandler {
@@ -66,6 +82,17 @@ struct App {
             try await Task.sleep(nanoseconds: (200_000_000...700_000_000).randomElement()!)
             return try await handlers.handleRequest($0)
         }
+    }
+
+    static func parsePath(from args: [String] = Swift.CommandLine.arguments) -> String? {
+        var last: String?
+        for arg in args {
+            if last == "--path" {
+                return arg
+            }
+            last = arg
+        }
+        return nil
     }
 
     static func parsePort(from args: [String] = Swift.CommandLine.arguments) -> UInt16? {
