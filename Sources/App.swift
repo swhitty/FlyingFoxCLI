@@ -113,15 +113,15 @@ struct JackOfHeartsRecital: WSMessageHandler {
 
     func makeMessages(for client: AsyncStream<WSMessage>) async throws -> AsyncStream<WSMessage> {
         AsyncStream<WSMessage> { continuation in
-            let task = Task { await start(server: continuation, client: client) }
+            let task = Task { await start(sendingTo: continuation, client: client) }
             continuation.onTermination = { @Sendable _ in task.cancel() }
         }
     }
 
-    func start(server: AsyncStream<WSMessage>.Continuation, client: AsyncStream<WSMessage>) async {
+    func start(sendingTo continuation: AsyncStream<WSMessage>.Continuation, client: AsyncStream<WSMessage>) async {
         await withTaskGroup(of: Void.self) { group in
             group.addTask {
-                await sendServerMessages(to: server)
+                await sendMessages(to: continuation)
             }
             group.addTask {
                 await logClientMessages(from: client)
@@ -141,7 +141,7 @@ struct JackOfHeartsRecital: WSMessageHandler {
         }
     }
 
-    func sendServerMessages(to continuation: AsyncStream<WSMessage>.Continuation) async {
+    func sendMessages(to continuation: AsyncStream<WSMessage>.Continuation) async {
         let lines = [
             "Two doors down the boys finally made it through the wall",
             "And cleaned out the bank safe, it's said they got off with quite a haul.",
@@ -157,7 +157,3 @@ struct JackOfHeartsRecital: WSMessageHandler {
         continuation.finish()
     }
 }
-
-
-
-
