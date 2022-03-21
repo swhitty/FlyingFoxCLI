@@ -78,6 +78,8 @@ struct App {
                          body: "Ciao 👋".data(using: .utf8)!)
         }
 
+        handlers.appendRoute("/jack", to: .webSocket(JackOfHeartsRecital()))
+
         return ClosureHTTPHandler { [handlers] in
             try await Task.sleep(nanoseconds: (200_000_000...700_000_000).randomElement()!)
             return try await handlers.handleRequest($0)
@@ -106,3 +108,56 @@ struct App {
         return nil
     }
 }
+
+struct JackOfHeartsRecital: WSMessageHandler {
+
+    func makeMessages(for client: AsyncStream<WSMessage>) async throws -> AsyncStream<WSMessage> {
+        AsyncStream<WSMessage> { continuation in
+            let task = Task { await start(server: continuation, client: client) }
+            continuation.onTermination = { @Sendable _ in task.cancel() }
+        }
+    }
+
+    func start(server: AsyncStream<WSMessage>.Continuation, client: AsyncStream<WSMessage>) async {
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+                await sendServerMessages(to: server)
+            }
+            group.addTask {
+                await logClientMessages(from: client)
+            }
+            await group.waitForAll()
+        }
+    }
+
+    func logClientMessages(from messages: AsyncStream<WSMessage>) async {
+        for await message in messages {
+            switch message {
+            case .text(let message):
+                print("received string:", message)
+            case .data(let data):
+                print("received data:", data.count, "bytes")
+            }
+        }
+    }
+
+    func sendServerMessages(to continuation: AsyncStream<WSMessage>.Continuation) async {
+        let lines = [
+            "Two doors down the boys finally made it through the wall",
+            "And cleaned out the bank safe, it's said they got off with quite a haul.",
+            "In the darkness by the riverbed they waited on the ground",
+            "For one more member who had business back in town.",
+            "But they couldn't go no further without the Jack of Hearts."
+        ]
+
+        for line in lines {
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            continuation.yield(.text(line))
+        }
+        continuation.finish()
+    }
+}
+
+
+
+
