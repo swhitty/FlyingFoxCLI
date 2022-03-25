@@ -18,7 +18,7 @@ Supply a port number:
 % swift run flyingfox --port 8008
 ```
 
-Listen on an `AF_UNIX` socket:
+Listen on a [UNIX-domain](https://www.freebsd.org/cgi/man.cgi?query=unix) socket:
 ```
 % swift run flyingfox --path fox
 ```
