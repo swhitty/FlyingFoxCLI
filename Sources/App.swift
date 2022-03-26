@@ -50,7 +50,7 @@ struct App {
                               logger: .print(),
                               handler: makeHandler())
         }
-        var addr = sockaddr_un.makeUnix(path: path)
+        var addr = sockaddr_un.unix(path: path)
         unlink(&addr.sun_path.0)
         return HTTPServer(address: addr,
                           logger: .print(),
