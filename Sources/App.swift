@@ -34,6 +34,8 @@ import FlyingFox
 import Darwin
 #elseif canImport(Glibc)
 import Glibc
+#elseif canImport(WinSDK)
+import WinSDK.WinSock2
 #endif
 
 @main
