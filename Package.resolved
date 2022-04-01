@@ -5,8 +5,8 @@
         "package": "FlyingFox",
         "repositoryURL": "https://github.com/swhitty/FlyingFox.git",
         "state": {
-          "branch": "winsock2",
-          "revision": "f44d0861243ff7493cef36a949f5828ba21212dd",
+          "branch": "main",
+          "revision": "92c50384ad8d1cc30c2d552836f54c97ed7bb411",
           "version": null
         }
       }
