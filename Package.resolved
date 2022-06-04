@@ -5,9 +5,9 @@
         "package": "FlyingFox",
         "repositoryURL": "https://github.com/swhitty/FlyingFox.git",
         "state": {
-          "branch": "main",
-          "revision": "14156d99be46f81f84f842088b017d5720016220",
-          "version": null
+          "branch": null,
+          "revision": "4eb0054257ef9e19b79aaedea319ca640ed5292b",
+          "version": "0.7.0"
         }
       }
     ]
