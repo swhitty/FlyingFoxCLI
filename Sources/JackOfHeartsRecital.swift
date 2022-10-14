@@ -1,5 +1,5 @@
 //
-//  App.swift
+//  JackOfHeartsRecital.swift
 //  FlyingFoxCLI
 //
 //  Created by Simon Whitty on 19/02/2022.
@@ -30,86 +30,6 @@
 //
 
 import FlyingFox
-#if canImport(Darwin)
-import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(WinSDK)
-import WinSDK.WinSock2
-#endif
-
-@main
-struct App {
-
-    static func main() async throws {
-        let server = makeServer()
-        try await server.start()
-    }
-
-    static func makeServer() -> HTTPServer {
-        guard let path = parsePath() else {
-            return HTTPServer(port: parsePort() ?? 80,
-                              logger: .print(),
-                              handler: makeHandler())
-        }
-        var addr = sockaddr_un.unix(path: path)
-        unlink(&addr.sun_path.0)
-        return HTTPServer(address: addr,
-                          logger: .print(),
-                          handler: makeHandler())
-    }
-
-    static func makeHandler() -> HTTPHandler {
-        var handlers = RoutedHTTPHandler()
-
-        handlers.appendRoute("/hello?name=*") { req in
-            HTTPResponse(statusCode: .ok,
-                         headers: [.contentType: "text/plain; charset=UTF-8"],
-                         body: "Hello \(req.query["name"]!)! 🦊".data(using: .utf8)!)
-        }
-
-        handlers.appendRoute("/hello") { _ in
-            HTTPResponse(statusCode: .ok,
-                         headers: [.contentType: "text/plain; charset=UTF-8"],
-                         body: "Hello World! 🦊".data(using: .utf8)!)
-        }
-
-        handlers.appendRoute("/bye") { _ in
-            HTTPResponse(statusCode: .ok,
-                         headers: [.contentType: "text/plain; charset=UTF-8"],
-                         body: "Ciao 👋".data(using: .utf8)!)
-        }
-
-        handlers.appendRoute("/jack", to: .webSocket(JackOfHeartsRecital()))
-
-        return ClosureHTTPHandler { [handlers] in
-            try await Task.sleep(nanoseconds: (200_000_000...700_000_000).randomElement()!)
-            return try await handlers.handleRequest($0)
-        }
-    }
-
-    static func parsePath(from args: [String] = Swift.CommandLine.arguments) -> String? {
-        var last: String?
-        for arg in args {
-            if last == "--path" {
-                return arg
-            }
-            last = arg
-        }
-        return nil
-    }
-
-    static func parsePort(from args: [String] = Swift.CommandLine.arguments) -> UInt16? {
-        var last: String?
-        for arg in args {
-            if last == "--port" {
-                return UInt16(arg)
-            }
-            last = arg
-        }
-        return nil
-    }
-}
 
 struct JackOfHeartsRecital: WSMessageHandler {
 

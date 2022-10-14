@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "FlyingFox",
-        "repositoryURL": "https://github.com/swhitty/FlyingFox.git",
-        "state": {
-          "branch": null,
-          "revision": "03412e32d62eaaed9b327eac91b1dffa07dc1aca",
-          "version": "0.9.0"
-        }
+  "pins" : [
+    {
+      "identity" : "flyingfox",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swhitty/FlyingFox.git",
+      "state" : {
+        "revision" : "ee0118895184f052a96b425869a76553864610a9",
+        "version" : "0.9.1"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
