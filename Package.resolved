@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
-        "revision" : "ee0118895184f052a96b425869a76553864610a9",
-        "version" : "0.9.1"
+        "revision" : "7488f1e9b71ff2e37adccd816fe5c99858f183ba",
+        "version" : "0.11.1"
       }
     }
   ],

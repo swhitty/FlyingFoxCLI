@@ -80,6 +80,16 @@ await server.appendRoute("/hello?name=*") { req in
                  body: "Hello \(req.query["name"]!)! 🦊".data(using: .utf8)!)
 }
 
+await server.appendRoute("/size") { req in
+    var size: Int = 0
+    for try await chunk in req.bodySequence {
+        size += chunk.count
+    }
+    return HTTPResponse(statusCode: .ok,
+                 headers: [.contentType: "text/plain; charset=UTF-8"],
+                 body: "Size: \(size) bytes".data(using: .utf8)!)
+}
+
 await server.appendRoute("/hello") { _ in
     HTTPResponse(statusCode: .ok,
                  headers: [.contentType: "text/plain; charset=UTF-8"],
