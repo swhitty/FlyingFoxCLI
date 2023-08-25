@@ -31,6 +31,7 @@
 
 import FlyingFox
 import FlyingSocks
+import Foundation
 #if canImport(Darwin)
 import Darwin
 #elseif canImport(Glibc)
@@ -72,7 +73,13 @@ func parsePort(from args: [String]) -> UInt16? {
     return nil
 }
 
+extension Bundle {
+    static let html = Bundle(url: Bundle.module.url(forResource: "HTML", withExtension: "bundle")!)!
+}
+
 let server = makeServer()
+
+await server.appendRoute("/", to: .file(named: "index.html", in: .html))
 
 await server.appendRoute("/hello?name=*") { req in
     HTTPResponse(statusCode: .ok,

@@ -1,7 +1,7 @@
 # ================================
 # Build image
 # ================================
-FROM swift:5.5.3-focal as build
+FROM swift:5.8-jammy as build
 
 # Set up a build area
 WORKDIR /build
@@ -18,10 +18,13 @@ WORKDIR /staging
 # Copy main executable to staging area
 RUN cp /build/.build/release/flyingfox ./
 
+# Copy resource bundle to staging area
+RUN cp -r /build/.build/release/FlyingFoxCLI_FlyingFoxCLI.resources ./
+
 # ================================
 # Run image
 # ================================
-FROM swift:5.5-focal-slim
+FROM swift:5.8-jammy-slim
 
 # Create a fox user and group with /app as its home directory
 RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app fox
@@ -38,5 +41,5 @@ USER fox:fox
 # Let Docker bind to port 8080
 EXPOSE 8080
 
-# Start the FlyingFox service when the image is run, default to listening on 8080
+# Start the cricketHTTP service when the image is run, default to listening on 8080
 ENTRYPOINT ["/app/flyingfox", "--port", "8080"]
