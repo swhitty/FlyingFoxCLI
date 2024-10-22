@@ -111,4 +111,4 @@ await server.appendRoute("/bye") { _ in
 
 await server.appendRoute("/jack", to: .webSocket(JackOfHeartsRecital()))
 
-try await server.start()
+try await server.run()
