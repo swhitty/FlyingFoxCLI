@@ -40,75 +40,16 @@ import Glibc
 import WinSDK.WinSock2
 #endif
 
-func makeServer(from args: [String] = Swift.CommandLine.arguments) -> HTTPServer {
-    guard let path = parsePath(from: args) else {
-        return HTTPServer(port: parsePort(from: args) ?? 80,
-                          logger: .print())
-    }
-    var addr = sockaddr_un.unix(path: path)
-    unlink(&addr.sun_path.0)
-    return HTTPServer(address: addr,
-                      logger: .print())
-}
+let address: any SocketAddress = .loopback(port: 5000)
+let socket = try Socket(domain: Int32(type(of: address).family), type: Int32(SOCK_DGRAM))
+try socket.bind(to: address)
 
-func parsePath(from args: [String]) -> String? {
-    var last: String?
-    for arg in args {
-        if last == "--path" {
-            return arg
-        }
-        last = arg
-    }
-    return nil
-}
+let server = try await AsyncSocket(socket: socket, pool: .client)
 
-func parsePort(from args: [String]) -> UInt16? {
-    var last: String?
-    for arg in args {
-        if last == "--port" {
-            return UInt16(arg)
-        }
-        last = arg
-    }
-    return nil
-}
+repeat {
+    let (client, bytes) = try await server.receive(atMost: 100)
+    let message = String(data: Data(bytes), encoding: .utf8) ?? "<not utf8>"
+    print("receive", client, message)
+    try await server.send("received: \(bytes.count)\n".data(using: .utf8)!, to: client.makeSocketAddress())
+} while true
 
-extension Bundle {
-    static let html = Bundle(url: Bundle.module.url(forResource: "HTML", withExtension: "bundle")!)!
-}
-
-let server = makeServer()
-
-await server.appendRoute("/", to: .file(named: "index.html", in: .html))
-
-await server.appendRoute("/hello?name=*") { req in
-    HTTPResponse(statusCode: .ok,
-                 headers: [.contentType: "text/plain; charset=UTF-8"],
-                 body: "Hello \(req.query["name"]!)! 🦊".data(using: .utf8)!)
-}
-
-await server.appendRoute("/size") { req in
-    var size: Int = 0
-    for try await chunk in req.bodySequence {
-        size += chunk.count
-    }
-    return HTTPResponse(statusCode: .ok,
-                 headers: [.contentType: "text/plain; charset=UTF-8"],
-                 body: "Size: \(size) bytes".data(using: .utf8)!)
-}
-
-await server.appendRoute("/hello") { _ in
-    HTTPResponse(statusCode: .ok,
-                 headers: [.contentType: "text/plain; charset=UTF-8"],
-                 body: "Hello World! 🦊".data(using: .utf8)!)
-}
-
-await server.appendRoute("/bye") { _ in
-    HTTPResponse(statusCode: .ok,
-                 headers: [.contentType: "text/plain; charset=UTF-8"],
-                 body: "Ciao 👋".data(using: .utf8)!)
-}
-
-await server.appendRoute("/jack", to: .webSocket(JackOfHeartsRecital()))
-
-try await server.run()

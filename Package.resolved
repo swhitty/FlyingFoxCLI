@@ -1,14 +1,15 @@
 {
+  "originHash" : "bb95e65d578ea85d04f1e45f323bde0b0df6cd2aa43a1ea3a0a81b391a94d8e1",
   "pins" : [
     {
       "identity" : "flyingfox",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
-        "revision" : "0482ba51ff2d6d91a7ea449c3dbdce2a78802b85",
-        "version" : "0.19.0"
+        "branch" : "SOCK_DGRAM",
+        "revision" : "28a4342d926ccc89c5fe4b85fc017f83b165fcdb"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
