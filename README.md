@@ -78,7 +78,7 @@ Deploy docker image that was built and now exists within container registry:
 Build locally using docker (faster) Requires [Docker desktop](https://www.docker.com/products/docker-desktop)
 
 ```shell
-% docker build . -t gcr.io/{project}/flyingfox
+% docker build --platform linux/amd64,linux/arm64 . -t gcr.io/{project}/flyingfox
 ```
 
 Configure docker to use google auth (one-time-only)
