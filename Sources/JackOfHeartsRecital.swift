@@ -30,6 +30,7 @@
 //
 
 import FlyingFox
+import Foundation
 
 struct JackOfHeartsRecital: WSMessageHandler {
 
@@ -66,18 +67,19 @@ struct JackOfHeartsRecital: WSMessageHandler {
     }
 
     func sendMessages(to continuation: AsyncStream<WSMessage>.Continuation) async {
-        let lines = [
-            "Two doors down the boys finally made it through the wall",
-            "And cleaned out the bank safe, it's said they got off with quite a haul.",
-            "In the darkness by the riverbed they waited on the ground",
-            "For one more member who had business back in town.",
-            "But they couldn't go no further without the Jack of Hearts."
-        ]
+        do {
+            let url = Bundle.html.url(forResource: "jack.txt", withExtension: nil)!
+            let lines = try String(contentsOf: url, encoding: .utf8)
+                .split(separator: "\n")
 
-        for line in lines {
-            try? await Task.sleep(nanoseconds: 3_000_000_000)
-            continuation.yield(.text(line))
+            for line in lines {
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                continuation.yield(.text(String(line)))
+            }
+            continuation.finish()
+        } catch {
+            print("error: \(error)")
+            continuation.finish()
         }
-        continuation.finish()
     }
 }

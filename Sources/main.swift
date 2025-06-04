@@ -110,5 +110,6 @@ await server.appendRoute("/bye") { _ in
 }
 
 await server.appendRoute("/jack", to: .webSocket(JackOfHeartsRecital()))
+await server.appendRoute("GET,HEAD /jack.txt", to: .file(named: "jack.txt", in: .html))
 
 try await server.run()
