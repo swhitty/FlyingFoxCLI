@@ -59,6 +59,8 @@ struct JackOfHeartsRecital: WSMessageHandler {
                 print("received string:", message)
             case .data(let data):
                 print("received data:", data.count, "bytes")
+            case .close(let code):
+                print("close with code: \(code.code), reason: \(code.reason)")
             }
         }
     }
