@@ -1,4 +1,4 @@
-// swift-tools-version:6.0
+// swift-tools-version:6.1
 
 import PackageDescription
 
@@ -11,7 +11,7 @@ let package = Package(
   	  	.executable(name: "flyingfox", targets: ["FlyingFoxCLI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swhitty/FlyingFox.git", .upToNextMajor(from: "0.22.0"))
+        .package(url: "https://github.com/swhitty/FlyingFox.git", branch: "main")
     ],
     targets: [
         .executableTarget(
@@ -24,14 +24,8 @@ let package = Package(
                 .copy("HTML.bundle")
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
-            ],
-            linkerSettings: [
-                .linkedLibrary("crypto", .when(platforms: [.linux])),
-                .linkedLibrary("icudata", .when(platforms: [.linux])),
-                .linkedLibrary("icuuc", .when(platforms: [.linux])),
-                .linkedLibrary("ssl", .when(platforms: [.linux])),
-                .linkedLibrary("z", .when(platforms: [.linux]))
+                .swiftLanguageMode(.v6),
+                .enableUpcomingFeature("ExistentialAny")
             ]
 		)
     ]
